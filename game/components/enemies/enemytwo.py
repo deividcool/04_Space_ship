@@ -3,9 +3,10 @@ import random
 
 from pygame.sprite import  Sprite
 from game.utils.constants import ENEMY_2,SCREEN_HEIGHT, SCREEN_WIDTH
+from game.components.bullets.bullet import Bullet
 
 class EnemyTwo(Sprite):
-    Y_POS = 10
+    Y_POS = 20
     X_POST_LIST = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550]
     SPEED_X = 5
     SPEED_Y = 1
@@ -40,8 +41,9 @@ class EnemyTwo(Sprite):
         if self.index >= self.move_x_for:
             self.index = 0
 
-    def update(self, ships):
+    def update(self, ships,game):
         self.rect.y += self.speed_y
+        self.shoot(game.bullet_manager)
 
         if self.movement_x == 'LEFT':
             self.rect.x -= self.speed_x
@@ -51,7 +53,12 @@ class EnemyTwo(Sprite):
             self.change_movement_x()
         if self.rect.y >= SCREEN_HEIGHT:
             ships.remove(self)
-
+    def shoot(self, bullet_manager):
+        current_time = pygame.time.get_ticks()
+        if self.shooting_time <= current_time:
+            bullet = Bullet(self)
+            bullet_manager.add_bullet(bullet)
+            self.shooting_time += random.randint(20,50)
 
 
     def draw(self,screen):
