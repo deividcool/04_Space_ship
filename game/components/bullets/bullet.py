@@ -27,16 +27,11 @@ class Bullet(Sprite):
     def update(self, bullets):
         if self.owner == 'enemy':
             self.rect.y += self.SPEED
-            if self.rect.y >= SCREEN_HEIGHT:
-                bullets.remove(self)
-
-        else:
-            print(self.owner)
-            print('si disparo')
+        elif self.owner == 'player':
             self.rect.y -= self.SPEED
-            if self.rect.y < 0:
-                bullets.remove(self)
 
+        if self.rect.y >= SCREEN_HEIGHT or self.rect.y < 0:
+            bullets.remove(self)
         
 
     def draw(self,screen):
