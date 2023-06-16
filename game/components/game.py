@@ -26,7 +26,7 @@ class Game:
         self.running = False
         self.score = 0
         self.death_count = 0
-        self.high_score = {'high_score': 0, 'death_count':0, 'score':0}
+        self.high_score = {'high_score': 0, 'death_count':0}
         self.menu = Menu('Press any key to start...', self.screen)
 
     def execute(self):
@@ -40,7 +40,6 @@ class Game:
     def run(self):
         self.enemy_manager.reset()
         self.score = 0
-        self.high_score['score'] = 0
         self.menu.reset_message()
         self.playing = True
         while self.playing:
@@ -94,7 +93,7 @@ class Game:
         else:
             self.menu.update_message(f'You Score:  {self.score}', 40)  
             self.menu.update_message(f'Highest score: {int(self.high_score["high_score"])}', 70)
-            self.menu.update_message('Total deaths: 0', 100) 
+            self.menu.update_message(f'Total deaths: {int(self.high_score["death_count"])}', 100) 
             self.menu.draw(self.screen)
             
             for text, rect in self.menu.texts:
@@ -112,6 +111,10 @@ class Game:
         if self.score > self.high_score['high_score']:
             self.high_score['high_score'] = self.score
             self.high_score['death_count'] = self.death_count
+
+    def update_death_count(self):
+        self.death_count += 1
+        self.high_score['death_count'] = self.death_count
 
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE, 30)
