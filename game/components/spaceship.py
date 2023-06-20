@@ -19,7 +19,7 @@ class Spaceship(Sprite):
         self.has_power_up = False
         self.power_up_timer = 0
         self.power_up_type = DEFAULT_TYPE
-        self.guns = 1
+        self.guns = 0
         self.speed = 0
         self.lifes = 3
 

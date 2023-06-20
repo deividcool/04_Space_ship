@@ -21,10 +21,10 @@ class BulletManager:
 
             if bullet.rect.colliderect(game.player.rect) and bullet.owner == 'enemy':
                 self.enemy_bullets.remove(bullet)
-                game.remove_life_image()
-                if game.player.power_up_type != SHIELD_TYPE:
-                    game.lifes -= 1
-                    if game.lifes <= 1:
+                if game.shield == False:
+                    game.remove_life_image()
+                   
+                    if game.lifes == 0:
                         game.playing = False
                         pygame.time.delay(1000)
                         game.update_death_count()

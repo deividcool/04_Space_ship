@@ -4,6 +4,7 @@ import random
 from game.components.power_ups.shield import Shield
 from game.components.power_ups.gunsx3 import Guns
 from game.components.power_ups.speedship import SpaceShip
+from game.components.power_ups.addlifes import heartPowerUp
 from game.utils.constants import SPACESHIP_SHIELD,SPACESHIP
 
 class PowerUpManager:
@@ -15,7 +16,7 @@ class PowerUpManager:
 
 
     def generate_power_up(self):
-        power_up_type = random.choice(['shield', 'guns', 'speed'])
+        power_up_type = random.choice(['shield', 'guns', 'speed', 'heart','shield'])
     
         if power_up_type == 'shield':
             power_up = Shield()
@@ -25,8 +26,11 @@ class PowerUpManager:
         elif power_up_type == 'speed':
             power_up = SpaceShip()
 
+        elif power_up_type == 'heart':
+            power_up = heartPowerUp()
+
         self.power_up_type = power_up_type
-        self.when_appears += random.randint(10000, 30000)
+        self.when_appears += random.randint(2000, 10000)
         self.power_ups.append(power_up)
     
     def update(self, game):
@@ -42,21 +46,30 @@ class PowerUpManager:
                 if self.power_up_type == 'shield':
                     power_up.start_time = pygame.time.get_ticks()
                     game.player.power_up_type = True
+                    game.shield = True
                     game.player.power_up_time_up = power_up.start_time + (self.duration * 5000)
                     game.player.set_image((50,75), SPACESHIP_SHIELD)
                     self.power_ups.remove(power_up)
-                if self.power_up_type == 'guns':
-                    game.player.guns =+ 2    
+                elif self.power_up_type == 'guns':
+                    game.player.guns += 2    
                     self.power_ups.remove(power_up)
-                if self.power_up_type == 'speed':
+                elif self.power_up_type == 'speed':
                     power_up.start_time = pygame.time.get_ticks()
-                    game.player.speed += 2    
+                    game.player.speed += 100    
                     game.player.power_up_type = True
                     game.player.power_up_time_up = power_up.start_time + (self.duration * 2000)
                     game.player.set_image((30,50), SPACESHIP)
                     self.power_ups.remove(power_up)
+                elif self.power_up_type == 'heart':
+                    game.add_life_image()
+                    self.power_ups.remove(power_up)
+
             else: 
                 game.player.set_image((40,65), SPACESHIP)
+                game.shield = False
+                
+
+
 
 
     def draw(self, screen):

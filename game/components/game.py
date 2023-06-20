@@ -37,6 +37,7 @@ class Game:
 
         self.soundcombat = COMBAT
         self.soundintro = INTRO
+        self.shield = False
         self.lifes = 3
         self.lives_images = []
         self.life_image = pygame.transform.scale(ICON, (30, 30))
@@ -47,7 +48,6 @@ class Game:
 
 
     def execute(self):
-        
         self.running = True
         while self.running:
             if not self.playing:
@@ -61,6 +61,11 @@ class Game:
     
     def run(self):
         self.enemy_manager.reset()
+        self.lifes = 3
+        self.lives_images = []
+        self.life_image = pygame.transform.scale(ICON, (30, 30))
+        for _ in range(self.lifes):
+            self.lives_images.append(self.life_image)
         self.score = 0
         self.menu.reset_message()
         self.playing = True
@@ -173,3 +178,7 @@ class Game:
         if self.lifes > 0:
             self.lifes -= 1
             self.lives_images.pop()
+
+    def add_life_image(self):
+        self.lifes += 1
+        self.lives_images.append(self.life_image)
